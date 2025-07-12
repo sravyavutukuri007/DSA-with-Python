@@ -1,0 +1,50 @@
+#Problem : Remove Duplicates from an Sorted Array
+
+#Problem Link: https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+
+Problem Summary:
+
+Given a sorted array, remove duplicates in-place such that each unique element appears only once.  
+Return the number of unique elements `k`, and modify the input array so that the first `k` elements hold the result.  
+Elements beyond `k` do not matter.
+
+#Brute Force method
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        # Initialize an empty list to store unique elements
+        unique = []
+    
+        # Loop through each number in the input list
+        for num in nums:
+            # If the unique list is empty OR the last element in unique is not equal to current number
+            # (this works because nums is sorted, so duplicates will be adjacent)
+            if not unique or unique[-1] != num:
+                unique.append(num)  # Add the new unique number to the list
+    
+        # Copy all unique elements back to the original nums array to satisfy in-place requirement
+        for i in range(len(unique)):
+            nums[i] = unique[i]
+    
+        # Return the number of unique elements
+        return len(unique)
+
+#Optimal approach (using two pointers)
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        # Initialize the 'l' pointer which keeps track of the position for unique elements
+        l = 1
+
+        # Start the 'r' pointer from index 1 and iterate through the array
+        for r in range(1, len(nums)):
+            # If the current element is not equal to the previous one,
+            # it means it's a new unique element
+            if nums[r] != nums[r - 1]:
+                # Place the unique element at the 'l' position
+                nums[l] = nums[r]
+                # Move the 'l' pointer to the next position
+                l += 1
+
+        # After the loop, 'l' will be the count of unique elements
+        return l
